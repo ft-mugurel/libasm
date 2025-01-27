@@ -1,13 +1,13 @@
-SRCS		=	./src/ft_strlen.s 
+SRCS		=	./src/ft_strlen.s  ./src/ft_strcpy.s ./src/ft_strcmp.s
 OBJS		=	$(SRCS:.s=.o)
 BONUS_SRCS	=	
 BONUS_OBJS	=	$(BONUS_SRCS:.s=.o)
 
 NA			=	nasm
-NA_FLAGS	=	-f elf64
+NA_FLAGS	=	-f elf64 -g
 FLAGS 		=	-Wall -Werror -Wextra
 NAME		=	libasm.a
-TEST		=	test
+TEST		=	tests
 TEST_BONUS	=	test_bonus
 
 %.o:			%.s
@@ -28,11 +28,13 @@ re:				fclean $(NAME)
 
 test:			$(NAME)
 				gcc $(FLAGS) -o $(TEST) main.c $(NAME)
+				./$(TEST)
 
 bonus:			$(OBJS) $(BONUS_OBJS)
 				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
 test_bonus:		bonus
 				gcc $(FLAGS) -o $(TEST) main.c $(NAME)
+				./$(TEST_BONUS)
 
 .PHONY:			clean fclean re test bonus test_bonus
