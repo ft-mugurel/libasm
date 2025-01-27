@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <errno.h>
 
 // ft_strcpy'nin prototipi
 char *ft_strcpy(char *dest, const char *src);
@@ -106,11 +108,58 @@ void test_ft_strcmp()
     printf("%s\n", ft_strcmp(str1, str5) == strcmp(str1, str5) ? "Test Başarılı" : "Test Başarısız");
 }
 
+void test_write_read()
+{
+    printf("\n=== write ve read Testleri ===\n");
+
+    char buf[50];
+    ssize_t ret;
+
+    // Test 1: write başarılı
+    ret = write(STDOUT_FILENO, "Test Mesajı\n", 12);
+    if (ret < 0)
+    {
+        printf("write Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+    else
+    {
+        printf("write Başarılı: %zd bayt yazıldı\n", ret);
+    }
+
+    // Test 2: read başarılı
+    printf("Bir şey yazın: ");
+    ret = read(STDIN_FILENO, buf, 50);
+    if (ret < 0)
+    {
+        printf("read Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+    else
+    {
+        buf[ret] = '\0'; // Sonlandırıcı ekle
+        printf("read Başarılı: %zd bayt okundu, İçerik: '%s'\n", ret, buf);
+    }
+
+    // Test 3: Hatalı dosya descriptor (write)
+    ret = write(-1, "Hatalı write", 12);
+    if (ret < 0)
+    {
+        printf("write Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+
+    // Test 4: Hatalı dosya descriptor (read)
+    ret = read(-1, buf, 50);
+    if (ret < 0)
+    {
+        printf("read Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+}
+
 int main()
 {
     test_ft_strcpy();
     test_ft_strlen();
     test_ft_strcmp();
+    test_write_read();
     return 0;
 }
 
