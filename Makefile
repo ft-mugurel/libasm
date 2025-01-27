@@ -1,10 +1,10 @@
-SRCS		=	./src/ft_strlen.s  ./src/ft_strcpy.s ./src/ft_strcmp.s
+SRCS		=	./src/ft_strlen.s  ./src/ft_strcpy.s ./src/ft_strcmp.s ./src/ft_write.s ./src/ft_read.s
 OBJS		=	$(SRCS:.s=.o)
 BONUS_SRCS	=	
 BONUS_OBJS	=	$(BONUS_SRCS:.s=.o)
 
 NA			=	nasm
-NA_FLAGS	=	-f elf64 -g
+NA_FLAGS	=	-f elf64 -g 
 FLAGS 		=	-Wall -Werror -Wextra
 NAME		=	libasm.a
 TEST		=	tests

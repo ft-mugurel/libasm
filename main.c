@@ -12,6 +12,12 @@ size_t ft_strlen(const char *s);
 // ft_strcmp'in prototipi
 int ft_strcmp(const char *s1, const char *s2);
 
+// ft_write'in prototipi
+ssize_t ft_write(int fd, const void *buf, size_t count);
+
+// ft_read'in prototipi
+ssize_t ft_read(int fd, void *buf, size_t count);
+
 void test_ft_strcpy()
 {
     printf("=== ft_strcpy Testleri ===\n");
@@ -115,42 +121,83 @@ void test_write_read()
     char buf[50];
     ssize_t ret;
 
-    // Test 1: write başarılı
+    // Test 1: Orijinal write başarılı
     ret = write(STDOUT_FILENO, "Test Mesajı\n", 12);
     if (ret < 0)
     {
-        printf("write Hata: %s (errno: %d)\n", strerror(errno), errno);
+        printf("Orijinal write Hata: %s (errno: %d)\n", strerror(errno), errno);
     }
     else
     {
-        printf("write Başarılı: %zd bayt yazıldı\n", ret);
+        printf("Orijinal write Başarılı: %zd bayt yazıldı\n", ret);
     }
 
-    // Test 2: read başarılı
+    // Test 2: Orijinal read başarılı
     printf("Bir şey yazın: ");
     ret = read(STDIN_FILENO, buf, 50);
     if (ret < 0)
     {
-        printf("read Hata: %s (errno: %d)\n", strerror(errno), errno);
+        printf("Orijinal read Hata: %s (errno: %d)\n", strerror(errno), errno);
     }
     else
     {
         buf[ret] = '\0'; // Sonlandırıcı ekle
-        printf("read Başarılı: %zd bayt okundu, İçerik: '%s'\n", ret, buf);
+        printf("Orijinal read Başarılı: %zd bayt okundu, İçerik: '%s'\n", ret, buf);
     }
 
     // Test 3: Hatalı dosya descriptor (write)
     ret = write(-1, "Hatalı write", 12);
     if (ret < 0)
     {
-        printf("write Hata: %s (errno: %d)\n", strerror(errno), errno);
+        printf("Orijinal write Hata: %s (errno: %d)\n", strerror(errno), errno);
     }
 
     // Test 4: Hatalı dosya descriptor (read)
     ret = read(-1, buf, 50);
     if (ret < 0)
     {
-        printf("read Hata: %s (errno: %d)\n", strerror(errno), errno);
+        printf("Orijinal read Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+
+    // Aynı testleri ft_write ve ft_read için de yapacağız
+    printf("\n=== ft_write ve ft_read Testleri ===\n");
+
+    // Test 1: ft_write başarılı
+    ret = ft_write(STDOUT_FILENO, "Test Mesajı\n", 12);
+    if (ret < 0)
+    {
+        printf("ft_write Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+    else
+    {
+        printf("ft_write Başarılı: %zd bayt yazıldı\n", ret);
+    }
+
+    // Test 2: ft_read başarılı
+    printf("Bir şey yazın: ");
+    ret = ft_read(STDIN_FILENO, buf, 50);
+    if (ret < 0)
+    {
+        printf("ft_read Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+    else
+    {
+        buf[ret] = '\0'; // Sonlandırıcı ekle
+        printf("ft_read Başarılı: %zd bayt okundu, İçerik: '%s'\n", ret, buf);
+    }
+
+    // Test 3: Hatalı dosya descriptor (ft_write)
+    ret = ft_write(-1, "Hatalı write", 12);
+    if (ret < 0)
+    {
+        printf("ft_write Hata: %s (errno: %d)\n", strerror(errno), errno);
+    }
+
+    // Test 4: Hatalı dosya descriptor (ft_read)
+    ret = ft_read(-1, buf, 50);
+    if (ret < 0)
+    {
+        printf("ft_read Hata: %s (errno: %d)\n", strerror(errno), errno);
     }
 }
 
