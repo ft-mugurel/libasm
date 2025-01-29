@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 
 // ft_strcpy'nin prototipi
 char *ft_strcpy(char *dest, const char *src);
@@ -17,6 +18,9 @@ ssize_t ft_write(int fd, const void *buf, size_t count);
 
 // ft_read'in prototipi
 ssize_t ft_read(int fd, void *buf, size_t count);
+
+// ft_strdup'nin prototipi
+char *ft_strdup(const char *s);
 
 void test_ft_strcpy()
 {
@@ -114,6 +118,42 @@ void test_ft_strcmp()
     printf("%s\n", ft_strcmp(str1, str5) == strcmp(str1, str5) ? "Test Başarılı" : "Test Başarısız");
 }
 
+void test_ft_strdup(void)
+{
+    char *test_strings[] = {
+        "Hello, World!",
+        "",
+        "This is a longer string for testing purposes.",
+        "1234567890",
+        NULL
+    };
+
+    printf("Testing ft_strdup:\n");
+    for (int i = 0; test_strings[i] != NULL; i++)
+    {
+        char *original_dup = strdup(test_strings[i]);  // Orijinal strdup
+        char *custom_dup = ft_strdup(test_strings[i]); // ft_strdup
+
+        printf("Original string: '%s'\n", test_strings[i]);
+        printf("Original strdup result: '%s'\n", original_dup);
+        printf("ft_strdup result: '%s'\n", custom_dup);
+
+        if ((original_dup && custom_dup && strcmp(original_dup, custom_dup) == 0) ||
+            (original_dup == NULL && custom_dup == NULL))
+        {
+            printf("✅ Test %d passed.\n", i + 1);
+        }
+        else
+        {
+            printf("❌ Test %d failed.\n", i + 1);
+        }
+
+        free(original_dup); // strdup tarafından ayrılan belleği serbest bırak
+        free(custom_dup);   // ft_strdup tarafından ayrılan belleği serbest bırak
+        printf("\n");
+    }
+}
+
 void test_write_read()
 {
     printf("\n=== write ve read Testleri ===\n");
@@ -206,6 +246,7 @@ int main()
     test_ft_strcpy();
     test_ft_strlen();
     test_ft_strcmp();
+    test_ft_strdup();
     test_write_read();
     return 0;
 }
